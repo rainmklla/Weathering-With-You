@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Locations | Weathering With You</title>
+  <link rel="stylesheet" href="assets/css/pages.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="page-shell">
+    <a class="back-link" href="index.html">← HOME</a>
+    <header><p class="eyebrow">YOUR WEATHER JOURNAL</p><h1>SAVED LOCATIONS</h1><p class="intro">Keep the places you care about close at hand.</p></header>
+    <section class="panel">
+      <form id="location-form" class="add-form">
+        <label for="location-input">ADD A LOCATION</label>
+        <div class="form-row"><div class="location-search-wrap"><input id="location-input" type="text" maxlength="80" placeholder="Start typing a city…" autocomplete="off" aria-autocomplete="list" aria-controls="saved-location-suggestions" aria-expanded="false" data-location-autocomplete required><ul class="suggestion-list" id="saved-location-suggestions" role="listbox" hidden></ul></div><button type="submit">SAVE</button></div>
+        <p class="hint">Type at least 2 letters, choose a city suggestion, then press SAVE.</p>
+      </form>
+    </section>
+    <section class="panel"><h2>YOUR PLACES</h2><ul id="location-list" class="location-list"></ul><p id="empty-state" class="empty">No saved locations yet. Add a place above to get started.</p></section>
+  </main>
+  <script>
+    const storageKey = 'wwy-saved-locations';
+    const form = document.getElementById('location-form');
+    const input = document.getElementById('location-input');
+    const list = document.getElementById('location-list');
+    const empty = document.getElementById('empty-state');
+    function getLocations() { try { const data = JSON.parse(localStorage.getItem(storageKey) || '[]'); return Array.isArray(data) ? data.filter(item => typeof item === 'string') : []; } catch { return []; } }
+    function render() {
+      const locations = getLocations(); list.replaceChildren(); empty.hidden = locations.length > 0;
+      locations.forEach((name, index) => {
+        const item = document.createElement('li'); item.className = 'location-item';
+        const label = document.createElement('a'); label.className = 'saved-location-link'; label.href = `index.html?location=${encodeURIComponent(name)}`; label.textContent = name;
+        const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'remove-button'; remove.textContent = 'REMOVE'; remove.setAttribute('aria-label', `Remove ${name}`);
+        remove.addEventListener('click', () => { const current = getLocations(); current.splice(index, 1); localStorage.setItem(storageKey, JSON.stringify(current)); render(); });
+        item.append(label, remove); list.append(item);
+      });
+    }
+    form.addEventListener('submit', event => { event.preventDefault(); const name = input.value.trim(); if (!name) return; const locations = getLocations(); if (!locations.some(item => item.toLocaleLowerCase() === name.toLocaleLowerCase())) locations.push(name); localStorage.setItem(storageKey, JSON.stringify(locations)); input.value = ''; render(); });
+    render();
+  </script>
+  <script src="assets/js/location-autocomplete.js" defer></script>
+</body>
+</html>

@@ -4,103 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weathering With You</title>
-  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="assets/css/index.css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
 </head>
 <body>
-
-  <!-- Logout button (Back) -->
-  <a href="#" class="logout-btn" onclick="goToWithLoading('login.html')">
-    <img src="back.png" alt="Logout Icon" />
-    <span>LOGOUT</span>
+<a href="savedlocations.html" class="savedlocations-btn">
+    <span>SAVED LOCATIONS</span><img src="assets/images/forward.png" alt="" />
   </a>
-
-  <!-- Saved Locations -->
-  <a href="savedlocations.html" class="savedlocations-btn">
-    <span>SAVED LOCATIONS</span>
-    <img src="forward.png" alt="Forward Icon" />
-  </a>
-
   <div class="container">
-    <div class="header">
-      <p>DAY / DATE / TIME</p>
-    </div>
-
+    <div class="header"><p id="current-date">WEATHER NEAR YOU</p></div>
     <div class="main-content">
-      <a href="activities.html" class="link-box">
-        <div class="activities-box">
-          <div class="activities-label">
-            <p>ACTIVITIES</p>
-          </div>
-        </div>
-      </a>
-
-      <div class="box-center">
-        <img src="sunny.png" alt="weather" class="weather" />
-        <img src="blueWindow.png" alt="window" class="window" id="window-img" />
-      </div>
-
-      <a href="reminders.html" class="link-box">
-        <div class="reminders-box">
-          <div class="reminders-label">
-            <p>DAILY FORECAST</p>
-          </div>
-        </div>
-      </a>
+      <a href="activities.html" class="link-box"><div class="activities-box"><div class="activities-label"><p>ACTIVITIES</p></div></div></a>
+      <div class="box-center"><img src="assets/images/sunny.png" alt="Weather illustration" class="weather" /><img src="assets/images/blueWindow.png" alt="window" class="window" id="window-img" /></div>
+      <a href="reminders.html" class="link-box"><div class="reminders-box"><div class="reminders-label"><p>DAILY FORECAST</p></div></div></a>
     </div>
-
     <div class="search-bar">
-      <input type="text" placeholder="Search..." />
-      <div class="save">
-        <p class="save-txt">Save</p>
-      </div>
+      <div class="search-control"><input type="text" id="location-search" placeholder="Search a city…" aria-label="Search for a city" autocomplete="off" aria-autocomplete="list" aria-controls="home-location-suggestions" aria-expanded="false" data-location-autocomplete /><ul class="suggestion-list" id="home-location-suggestions" role="listbox" hidden></ul></div>
+      <button class="save" id="search-location" type="button">SEARCH</button>
+      <button class="save" id="save-location" type="button">SAVE</button>
     </div>
-
     <div class="footer-row">
-      <div class="cat">
-        <img src="cat.png" alt="cat" />
-      </div>
-
+      <div class="cat"><img src="assets/images/cat.png" alt="cat" /></div>
       <div class="info">
-        <div class="prev">
-          <img src="prev.png" alt="previous" />
-        </div>
+        <button class="prev location-step" id="previous-location" type="button" aria-label="Previous saved location"><img src="assets/images/prev.png" alt="" /></button>
         <div class="details">
-          <p class="loc">LOCATION</p>
-          <p>TEMP °C</p>
-          <p>WEATHER</p>
+          <p class="loc" id="weather-location">Search for a city</p>
+          <p id="weather-temperature">-- °C</p>
+          <p id="weather-condition">Weather will appear here</p>
+          <p class="weather-status" id="weather-status" role="status" aria-live="polite"></p>
         </div>
-        <div class="next">
-          <img src="next.png" alt="next" />
-        </div>
+        <button class="next location-step" id="next-location" type="button" aria-label="Next saved location"><img src="assets/images/next.png" alt="" /></button>
       </div>
-
-      <div class="paint">
-        <button id="paint-btn">
-          <img src="paint.png" alt="customize" class="customize" />
-        </button>
-      </div>
+      <div class="paint"><button id="paint-btn" type="button" aria-label="Customize window"><img src="assets/images/paint.png" alt="" class="customize" /></button></div>
     </div>
   </div>
-
   <script>
-    // Reusable loading-page redirection function
-    function goToWithLoading(targetPage) {
-      window.location.href = `loading.html?redirect=${encodeURIComponent(targetPage)}`;
-    }
-
-    // === Window Color Cycle ===
-    const paintBtn = document.getElementById("paint-btn");
-    const windowImg = document.getElementById("window-img");
-
-    const windowImages = ["blueWindow.png", "redWindow.png", "yellowWindow.png"];
+    const paintBtn = document.getElementById('paint-btn');
+    const windowImg = document.getElementById('window-img');
+    const windowImages = ['assets/images/blueWindow.png', 'assets/images/redWindow.png', 'assets/images/yellowWindow.png'];
     let currentIndex = 0;
-
-    paintBtn.addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % windowImages.length;
-      windowImg.src = windowImages[currentIndex];
-    });
+    paintBtn.addEventListener('click', () => { currentIndex = (currentIndex + 1) % windowImages.length; windowImg.src = windowImages[currentIndex]; });
   </script>
-
+  <script src="assets/js/weather.js" defer></script>
+  <script src="assets/js/location-autocomplete.js" defer></script>
 </body>
 </html>
