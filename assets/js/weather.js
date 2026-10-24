@@ -28,8 +28,18 @@
     const response = await fetch(url); if (!response.ok) throw new Error('Weather could not be loaded. Please try again.'); return response.json();
   }
   const setText = (id, text) => { const element = document.getElementById(id); if (element) element.textContent = text; };
+  function applyWeatherWindow(current) {
+    const windowImage = document.getElementById('window-img');
+    if (!windowImage) return;
+    const weatherCode = Number(current.weather_code);
+    const temperature = Number(current.temperature_2m);
+    const theme = weatherCode >= 45 || temperature <= 10 ? 'blue' : temperature >= 25 ? 'red' : 'yellow';
+    windowImage.src = `assets/images/${theme}Window.png`;
+  }
+
   function renderHome(place, data) {
     const current = data.current; const [description] = condition(current.weather_code);
+    applyWeatherWindow(current);
     setText('weather-location', place.name); setText('weather-temperature', `${Math.round(current.temperature_2m)} °C`); setText('weather-condition', description);
     const localDate = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: place.timezone || 'UTC' }).format(new Date(`${current.time}:00`));
     setText('current-date', localDate); setText('weather-status', `Feels like ${Math.round(current.apparent_temperature)}° · ${Math.round(current.relative_humidity_2m)}% humidity · wind ${Math.round(current.wind_speed_10m)} km/h`);
