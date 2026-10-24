@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weathering With You - Loading</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        height: 100vh;
+        background: radial-gradient(circle at top, #87CEEB 0%, #1E1E1E 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: "Press Start 2P", cursive;
+        color: white;
+        opacity: 1;
+        transition: opacity 1.5s ease-in-out; /* smooth fade effect */
+    }
+
+    body.fade-out {
+        opacity: 0;
+    }
+
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+
+    .logo {
+        z-index: 2;
+        width: 150px;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .loading {
+        z-index: 2;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #FFFFFF;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        white-space: pre;
+        overflow: hidden;
+        border-right: 2px solid #FFFFFF;
+        width: 0;
+        animation: typing 3s steps(9) forwards, blink 0.7s infinite step-end alternate;
+    }
+
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 9ch; }
+    }
+
+    @keyframes blink {
+        50% { border-color: transparent; }
+    }
+</style>
+</head>
+<body>
+<canvas id="rain"></canvas>
+<img src="logo.png" alt="Logo" class="logo">
+<div class="loading">Loading...</div>
+
+<script>
+const canvas = document.getElementById('rain');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let drops = [];
+const numDrops = 200;
+
+for (let i = 0; i < numDrops; i++) {
+  drops.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    length: Math.random() * 15 + 10,
+    speed: Math.random() * 3 + 1
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+  drops.forEach(drop => {
+    ctx.fillRect(drop.x, drop.y, 1.5, drop.length);
+  });
+}
+
+function update() {
+  drops.forEach(drop => {
+    drop.y += drop.speed;
+    if (drop.y > canvas.height) {
+      drop.y = -drop.length;
+      drop.x = Math.random() * canvas.width;
+    }
+  });
+}
+
+function animate() {
+  draw();
+  update();
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// Fade-out transition after animation
+setTimeout(() => {
+  document.body.classList.add('fade-out');
+  setTimeout(() => {
+    window.location.href = "signup.html"; // redirect here
+  }, 1500); // wait for fade to finish
+}, 4000); // how long loading stays before transition
+
+// Automatically redirect after animation
+const params = new URLSearchParams(window.location.search);
+const redirect = params.get("redirect");
+
+if (redirect) {
+  setTimeout(() => {
+    window.location.href = redirect;
+  }, 3000); // Match this to your loading animation duration
+}
+
+</script>
+
+
+</body>
+</html>

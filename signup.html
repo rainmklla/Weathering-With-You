@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="signup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="center-wrapper">
+    <div class="board-container">
+      <img src="bigboard.png" alt="Board" class="bigboard-img">
+
+      <div class="board-content">
+        <h1>SIGN UP</h1>
+
+        <form>
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+
+          <label for="confirm">Confirm Password</label>
+          <input type="password" id="confirm" name="confirm" required>
+
+          <p class="login-link">
+            Already have an account?
+            <a href="login.html">Login</a> 
+          </p>
+        </form>
+      </div>
+
+      <div class="forward-btn-wrapper">
+        <!-- Instead of direct link, trigger loading redirect -->
+        <img src="forward.png" alt="Forward" class="forward-btn" id="forward-btn">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Forward button click: go to loading page first, then to index.html
+    document.getElementById("forward-btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.href = "loading.html?redirect=" + encodeURIComponent("index.html");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weathering With You</title>
+  <link rel="stylesheet" href="index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Logout button (Back) -->
+  <a href="#" class="logout-btn" onclick="goToWithLoading('login.html')">
+    <img src="back.png" alt="Logout Icon" />
+    <span>LOGOUT</span>
+  </a>
+
+  <!-- Saved Locations -->
+  <a href="savedlocations.html" class="savedlocations-btn">
+    <span>SAVED LOCATIONS</span>
+    <img src="forward.png" alt="Forward Icon" />
+  </a>
+
+  <div class="container">
+    <div class="header">
+      <p>DAY / DATE / TIME</p>
+    </div>
+
+    <div class="main-content">
+      <a href="activities.html" class="link-box">
+        <div class="activities-box">
+          <div class="activities-label">
+            <p>ACTIVITIES</p>
+          </div>
+        </div>
+      </a>
+
+      <div class="box-center">
+        <img src="sunny.png" alt="weather" class="weather" />
+        <img src="blueWindow.png" alt="window" class="window" id="window-img" />
+      </div>
+
+      <a href="reminders.html" class="link-box">
+        <div class="reminders-box">
+          <div class="reminders-label">
+            <p>DAILY FORECAST</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search..." />
+      <div class="save">
+        <p class="save-txt">Save</p>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <div class="cat">
+        <img src="cat.png" alt="cat" />
+      </div>
+
+      <div class="info">
+        <div class="prev">
+          <img src="prev.png" alt="previous" />
+        </div>
+        <div class="details">
+          <p class="loc">LOCATION</p>
+          <p>TEMP °C</p>
+          <p>WEATHER</p>
+        </div>
+        <div class="next">
+          <img src="next.png" alt="next" />
+        </div>
+      </div>
+
+      <div class="paint">
+        <button id="paint-btn">
+          <img src="paint.png" alt="customize" class="customize" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Reusable loading-page redirection function
+    function goToWithLoading(targetPage) {
+      window.location.href = `loading.html?redirect=${encodeURIComponent(targetPage)}`;
+    }
+
+    // === Window Color Cycle ===
+    const paintBtn = document.getElementById("paint-btn");
+    const windowImg = document.getElementById("window-img");
+
+    const windowImages = ["blueWindow.png", "redWindow.png", "yellowWindow.png"];
+    let currentIndex = 0;
+
+    paintBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % windowImages.length;
+      windowImg.src = windowImages[currentIndex];
+    });
+  </script>
+
+</body>
+</html>
