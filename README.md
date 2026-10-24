@@ -2,7 +2,7 @@
 
 A pixel-art weather app prototype with an animated rain loading screen, login and signup pages, and a dashboard with a customizable window theme.
 
-**Live demo:** https://YOUR-PROJECT.vercel.app
+**Live demo:** https://weathering-with-you.vercel.app
 
 ## Features
 
@@ -21,7 +21,7 @@ No build step or dependencies needed.
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/weathering-with-you.git
+   git clone https://github.com/rainmklla/Weathering-With-You.git
    ```
 2. Open `loading.html` in your browser, or use the VS Code **Live Server** extension.
 
