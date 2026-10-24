@@ -24,12 +24,28 @@
     const result = data.results[0]; return { name: placeName(result), latitude: result.latitude, longitude: result.longitude, timezone: result.timezone || 'auto' };
   }
   async function getWeather(place) {
-    const url = new URL(WEATHER_URL); url.search = new URLSearchParams({ latitude: String(place.latitude), longitude: String(place.longitude), current: 'temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m', daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max', forecast_days: '5', timezone: place.timezone || 'auto', temperature_unit: 'celsius', wind_speed_unit: 'kmh' });
+    const url = new URL(WEATHER_URL); url.search = new URLSearchParams({ latitude: String(place.latitude), longitude: String(place.longitude), current: 'temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,is_day', daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max', forecast_days: '5', timezone: place.timezone || 'auto', temperature_unit: 'celsius', wind_speed_unit: 'kmh' });
     const response = await fetch(url); if (!response.ok) throw new Error('Weather could not be loaded. Please try again.'); return response.json();
   }
   const setText = (id, text) => { const element = document.getElementById(id); if (element) element.textContent = text; };
+  function updateWeatherScene(current) {
+    const scene = document.getElementById('weather-scene');
+    if (!scene) return;
+    const code = Number(current.weather_code);
+    const wind = Number(current.wind_speed_10m);
+    let image = 'sunny.png';
+    if (code >= 95) image = 'stormy.png';
+    else if ((code >= 71 && code <= 77) || code === 85 || code === 86) image = 'snowy.png';
+    else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) image = 'rainy.png';
+    else if (Number(current.is_day) === 0) image = 'night.png';
+    else if (wind >= 30) image = 'windy.png';
+    else if (code === 2 || code === 3 || code === 45 || code === 48) image = 'cloudy.png';
+    scene.src = `assets/images/${image}`;
+    scene.alt = `${image.replace('.png', '')} weather scene`;
+  }
   function renderHome(place, data) {
     const current = data.current; const [description] = condition(current.weather_code);
+    updateWeatherScene(current);
     setText('weather-location', place.name); setText('weather-temperature', `${Math.round(current.temperature_2m)} °C`); setText('weather-condition', description);
     const localDate = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: place.timezone || 'UTC' }).format(new Date(`${current.time}:00`));
     setText('current-date', localDate); setText('weather-status', `Feels like ${Math.round(current.apparent_temperature)}° · ${Math.round(current.relative_humidity_2m)}% humidity · wind ${Math.round(current.wind_speed_10m)} km/h`);
