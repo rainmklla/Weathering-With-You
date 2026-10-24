@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Forecast | Weathering With You</title>
+  <link rel="stylesheet" href="assets/css/pages.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="page-shell">
+    <a class="back-link" href="index.html">← HOME</a>
+    <header><p class="eyebrow">A QUICK LOOK AHEAD</p><h1>DAILY FORECAST</h1><p class="intro">Live conditions and the next five days.</p></header>
+    <section class="panel forecast-panel" id="forecast-panel" aria-live="polite">
+      <p class="eyebrow" id="forecast-location">Finding your weather…</p>
+      <div class="forecast-heading"><span class="weather-icon" id="forecast-icon" aria-hidden="true">🌤️</span><div><p class="eyebrow" id="forecast-date">TODAY</p><h2 id="forecast-current">Loading current weather</h2></div></div>
+      <p class="forecast-copy" id="forecast-summary">Looking up current conditions…</p>
+      <div class="forecast-days" id="forecast-days"></div>
+      <p class="forecast-credit">Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a></p>
+    </section>
+    <p class="footnote">Search a city on the home page to see its forecast. Weather data is provided by Open-Meteo.</p>
+  </main>
+  <script src="assets/js/weather.js" defer></script>
+</body>
+</html>
